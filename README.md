@@ -5,7 +5,8 @@ There is a blog app with the following entities:
 * User, has only login.
 * Post, belongs to User, has title, body, author IP (saved separately for each User).
 * Rating, belongs to Post, can only be in range from 1 to 5.
-* The aim is create JSON API with the following actions:
+
+The aim is create JSON API with the following actions:
 
 * Create a post. Accepts title and body, user login and IP. If user doesn't exist, it should be created. Returns either the post's attributes with status 200, or validation error with status 422.
 * Rate a post. Accepts the post id and the value, returns new average rating.
