@@ -1,0 +1,1 @@
+json.array! @all_ips, partial: 'posts/ip', as: :ip
