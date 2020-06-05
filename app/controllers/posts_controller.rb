@@ -1,33 +1,21 @@
 class PostsController < ApplicationController
 
+  before_action :service_initialization
+  respond_to :json
+
   def index
-    @posts = Post.all.sort_by do |post|
-      post.average_rate
-    end
-    render json: @posts = @posts[0, count_params]
+    respond_with(@posts = @service.get_all_sorted_posts(count_params))
   end
 
 
   def create
-    @user = User.where(login: post_params[:user_login]).first_or_create
-    @post = Post.new(title: post_params[:title],
-                     body: post_params[:body],
-                     author_ip: post_params[:author_ip],
-                     user: @user)
-      if @post.save
-        render json: @post
-      else
-        render json: @post.errors, status: :unprocessable_entity
-      end
+    @post = @service.create_post(post_params)
+    @post.save
+    respond_with @post, location: -> { posts_path }
   end
 
-  def ips_index
-    @ips = {}
-    Post.all.each do |post|
-      @ips[post.author_ip.to_sym] = @ips[post.author_ip.to_sym] == nil ? [] : @ips[post.author_ip.to_sym]
-      @ips[post.author_ip.to_sym] << post.user.login
-    end
-    render json: @ips
+  def ips
+    respond_with(@ips = @service.get_all_ips)
   end
 
   private
@@ -38,5 +26,9 @@ class PostsController < ApplicationController
 
   def count_params
     params.require(:count).to_i
+  end
+
+  def service_initialization
+    @service = PostService.new
   end
 end

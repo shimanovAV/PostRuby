@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :rate do
-    rate { 5 }
+    rate { rand(1..5) }
   end
   factory :invalid_rate, class: Rate do
     rate { nil }
