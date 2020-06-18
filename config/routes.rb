@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
 
-
   resources :posts, only: [:create, :ips, :index] do
-    get '/:count', to: 'posts#index', on: :collection
+    get '/:count', to: 'posts#index', on: :collection # GET /posts
     get '/ips', to: 'posts#ips'
     resource :rates, only: [:create]
   end
