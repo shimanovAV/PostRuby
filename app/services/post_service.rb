@@ -8,18 +8,21 @@ class PostService
 
   def create_post(post_params)
     user = User.where(login: post_params[:user_login]).first_or_create
-    Post.new(title: post_params[:title],
+    Post.create(title: post_params[:title],
                      body: post_params[:body],
                      author_ip: post_params[:author_ip],
                      user: user)
   end
 
   def get_all_ips
-    ips = {}
+    ips = Hash.new {|h, k| h[k] = [] }
     Post.all.each do |post|
-      ips[post.author_ip.to_sym] = ips[post.author_ip.to_sym] == nil ? [] : ips[post.author_ip.to_sym]
-      ips[post.author_ip.to_sym] << post.user.login
-      ips[post.author_ip.to_sym].uniq!
+      ip = post.author_ip.to_sym
+
+      ips[ip] << post.user.login
+      ips[ip].uniq!
+      # OR
+      ips[ip] << post.user.login unless ips[ip].include?(post.user.login)
     end
     ips
   end
