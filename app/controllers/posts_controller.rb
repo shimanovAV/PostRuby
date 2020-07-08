@@ -2,7 +2,7 @@ class PostsController < ApplicationController
 
   respond_to :json
 
-  def index
+  def top_posts
     respond_with(service.get_all_sorted_posts(count_params))
   end
 
@@ -19,11 +19,11 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :body, :user_login, :author_ip)
+    params.permit(:title, :body, :user_login, :author_ip)
   end
 
   def count_params
-    params.require(:count).to_i
+    params.permit(:count)
   end
 
   def service

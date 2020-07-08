@@ -12,12 +12,9 @@ describe PostsController do
         -(post.average_rate)
       end
       @correct_posts = all_posts[0, 3]
-      get :index, params: {count: 3, format: :json}
+      get :top_posts, params: {count: 3, format: :json}
     end
 
-    it 'fill an array of N top posts' do
-      expect(assigns(:posts)).to match_array(@correct_posts)
-    end
     it 'returns correct json' do
       response.body.should == @correct_posts.to_json
     end
@@ -38,9 +35,6 @@ describe PostsController do
       get :ips, params: {format: :json}
     end
 
-    it 'fill an array of hashes of IPs that were used by multiple authors' do
-      expect(assigns(:ips)).to eq(@correct_ips)
-    end
     it 'returns correct json' do
       response.body.should == @correct_ips.to_json
     end
@@ -52,7 +46,7 @@ describe PostsController do
   describe 'POST #create' do
     context 'with valid attributes' do
       let(:create_post_request) {
-        post :create, :params => {:post => attributes_for(:create_post).merge(user_login: 'user 1'), :format => :json}
+        post :create, :params => attributes_for(:create_post).merge(user_login: 'user 1'), :format => :json
       }
       context 'user exists and saves the new post in the database' do
         before {create(:user, login: 'user 1')}
@@ -61,13 +55,9 @@ describe PostsController do
         it { should_not change { User.count } }
       end
       context 'user does not exist and saves the new post in the database' do
-        subject { lambda { post :create, :params => {:post => attributes_for(:create_post).merge(user_login: 'user 2'), :format => :json} } }
+        subject { lambda { post :create, :params => attributes_for(:create_post).merge(user_login: 'user 2'), :format => :json} }
         it { should change { Post.count }.by 1 }
         it { should change { User.count }.by 1 }
-      end
-      it 'returns correct json' do
-        create_post_request
-        response.body.should == assigns(:post).to_json
       end
       it "returns status created" do
         create_post_request

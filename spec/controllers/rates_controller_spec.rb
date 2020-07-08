@@ -8,14 +8,10 @@ describe RatesController do
     end
     context 'with valid attributes' do
       let(:valid_post_request) {
-        post :create, :params => {:post_id => @post.id, :rate => attributes_for(:rate), :format => :json}
+        post :create, :params => attributes_for(:rate).merge(post_id: @post.id), :format => :json
       }
       it 'saves the rate' do
         expect { valid_post_request }.to change(Rate, :count).by 1
-      end
-      it 'returns correct json with average rate' do
-        valid_post_request
-        response.body.should == assigns(:average_rate).to_json
       end
       it "returns status created" do
         valid_post_request

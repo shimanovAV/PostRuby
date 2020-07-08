@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
 
   resources :posts, only: [:create, :ips, :index] do
-    get '/:count', to: 'posts#index', on: :collection # GET /posts
-    get '/ips', to: 'posts#ips'
+    get '/top/:count', to: 'posts#top_posts', on: :collection
+    get '/ips', to: 'posts#ips', on: :collection
     resource :rates, only: [:create]
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

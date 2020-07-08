@@ -1,7 +1,8 @@
 class RateService
-  def create_rate(post_params, rate_params)
-    post = Post.find(post_params)
-    Rate.new(rate: rate_params[:rate],
+  def initialize_rate(rate_params)
+    post = Post.find(rate_params[:post_id])
+    num = rate_params[:rate].to_i
+    Rate.new(rate: num,
                     post: post)
   end
 end

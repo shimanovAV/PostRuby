@@ -1,9 +1,10 @@
 class PostService
-  def get_all_sorted_posts(count)
+  def get_all_sorted_posts(params)
     posts = Post.all.sort_by do |post|
       -(post.average_rate)
     end
-    posts[0, count]
+    top_count = params[:count].to_i
+    posts[0, top_count]
   end
 
   def create_post(post_params)
@@ -18,10 +19,6 @@ class PostService
     ips = Hash.new {|h, k| h[k] = [] }
     Post.all.each do |post|
       ip = post.author_ip.to_sym
-
-      ips[ip] << post.user.login
-      ips[ip].uniq!
-      # OR
       ips[ip] << post.user.login unless ips[ip].include?(post.user.login)
     end
     ips

@@ -4,6 +4,8 @@ class CreatePosts < ActiveRecord::Migration[6.0]
       t.string :title
       t.text :body
       t.string :author_ip
+      t.float :average_rate
+      t.references :user, foreign_key: true, index: true
 
       t.timestamps
     end
