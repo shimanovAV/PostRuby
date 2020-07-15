@@ -1,9 +1,8 @@
 class RatesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-
   def create
-    @rate = service.initialize_rate(rate_params)
+    @rate = rate_service.initialize_rate(rate_params)
     if @rate.save
       render json: @rate.post.average_rate, status: :created
     else
@@ -17,7 +16,7 @@ class RatesController < ApplicationController
     params.permit(:rate, :post_id)
   end
 
-  def service
-    @service ||= RateService.new
+  def rate_service
+    @rate_service ||= RateService.new
   end
 end

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
-  resources :posts, only: [:create, :ips, :index] do
-    get '/top/:count', to: 'posts#top_posts', on: :collection
+  resources :posts, only: [:index, :create] do
+    get '/top', to: 'posts#top_posts', on: :collection
     get '/ips', to: 'posts#ips', on: :collection
     resource :rates, only: [:create]
   end
