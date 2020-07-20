@@ -3,17 +3,16 @@ class PostsController < ApplicationController
   respond_to :json
 
   def top_posts
-    respond_with(service.get_all_sorted_posts(count_params))
+    respond_with(post_service.get_all_sorted_posts(count_params))
   end
 
-
   def create
-    post = service.create_post(post_params)
+    post = post_service.create_post(post_params)
     respond_with post, location: -> { posts_path }
   end
 
   def ips
-    respond_with(service.get_all_ips)
+    respond_with(post_service.get_all_ips)
   end
 
   private
@@ -26,7 +25,7 @@ class PostsController < ApplicationController
     params.permit(:count)
   end
 
-  def service
-    @service ||= PostService.new
+  def post_service
+    @post_service ||= PostService.new
   end
 end

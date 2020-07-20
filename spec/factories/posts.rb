@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :post do
+    # use sequences to get unique strings
     title { "MyString" }
     body { "MyText" }
     author_ip { "MyString" }
