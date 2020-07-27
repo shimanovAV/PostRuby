@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'rails_helper'
 
 describe PostsController do
-  describe 'GET #index' do
+  describe 'GET #top_posts' do
     before do
       all_posts = create_list(:post, 5)
       create(:rate, rate: 4, post: all_posts.first)
@@ -30,13 +30,14 @@ describe PostsController do
       create(:post, title: 'Post 1', body: 'Body 1', author_ip: 'ee123ee456', user: user1)
       create(:post, title: 'Post 2', body: 'Body 2', author_ip: 'ee123ee456', user: user2)
       create(:post, title: 'Post 3', body: 'Body 3', author_ip: 'ii123ii456', user: user1)
-      @correct_ips = {ee123ee456: ['User 1', 'User 2'],
-                      ii123ii456: ['User 1']}
+      @correct_ips = {"ee123ee456" => ['User 1', 'User 2'],
+                      "ii123ii456" => ['User 1']}
       get :ips, params: {format: :json}
     end
 
     it 'returns correct json' do
-      response.body.should == @correct_ips.to_json
+      response_hash = JSON.parse response.body
+      response_hash.should == @correct_ips
     end
     it "returns a 200" do
       expect(response).to have_http_status(200)
@@ -49,19 +50,25 @@ describe PostsController do
         post :create, :params => attributes_for(:create_post).merge(user_login: 'user 1'), :format => :json
       }
       context 'user exists and saves the new post in the database' do
-        before {create(:user, login: 'user 1')}
+        before { create(:user, login: 'user 1') }
         subject { lambda { create_post_request } }
         it { should change { Post.count }.by 1 }
         it { should_not change { User.count } }
       end
       context 'user does not exist and saves the new post in the database' do
-        subject { lambda { post :create, :params => attributes_for(:create_post).merge(user_login: 'user 2'), :format => :json} }
+        subject { lambda { post :create, :params => attributes_for(:create_post).merge(user_login: 'user 2'), :format => :json } }
         it { should change { Post.count }.by 1 }
         it { should change { User.count }.by 1 }
       end
       it "returns status created" do
         create_post_request
         expect(response).to have_http_status(:created)
+      end
+      it "handles exception correctly" do
+        allow_any_instance_of(PostsController).to receive(:create).and_raise(StandardError.new("Unexpected error"))
+        create_post_request
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to eq "Unexpected error"
       end
     end
     context 'with invalid attributes' do

@@ -10,17 +10,16 @@ class PostService
   def create_post(post_params)
     user = User.where(login: post_params[:user_login]).first_or_create
     Post.create(
-      title: post_params[:title],
-      body: post_params[:body],
-      author_ip: post_params[:author_ip],
-      user: user
+        title: post_params[:title],
+        body: post_params[:body],
+        author_ip: post_params[:author_ip],
+        user: user
     )
   end
 
   def get_all_ips
-    # try to perform via sql
-    ips = Hash.new {|h, k| h[k] = [] }
-    Post.all.each do |post|
+    ips = Hash.new { |h, k| h[k] = [] }
+    Post.distinct(:author_ip).each do |post|
       ip = post.author_ip.to_sym
       ips[ip] << post.user.login unless ips[ip].include?(post.user.login)
     end
