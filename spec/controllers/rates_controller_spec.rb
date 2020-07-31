@@ -37,7 +37,7 @@ describe RatesController do
       end
       it "returns right error message" do
         invalid_post_request
-        expect(response.body).to eq "Rate hasn't been saved"
+        expect(response.body).to include "Error creating rate:"
       end
     end
   end

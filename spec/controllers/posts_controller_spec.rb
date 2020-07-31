@@ -12,7 +12,7 @@ describe PostsController do
         -(post.average_rate)
       end
       @correct_posts = all_posts[0, 3]
-      get :top_posts, params: {count: 3, format: :json}
+      get :index, params: {count: 3, format: :json}
     end
 
     it 'returns correct json' do

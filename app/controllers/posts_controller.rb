@@ -2,7 +2,7 @@ class PostsController < ApplicationController
 
   respond_to :json
 
-  def top_posts
+  def index
     respond_with(post_service.get_all_sorted_posts(count_params))
   end
 
