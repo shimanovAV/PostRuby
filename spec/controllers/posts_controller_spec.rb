@@ -36,8 +36,8 @@ describe PostsController do
     end
 
     it 'returns correct json' do
-      response_hash = JSON.parse response.body
-      response_hash.should == @correct_ips
+      response_hash = response.body
+      response_hash.should == @correct_ips.to_json
     end
     it "returns a 200" do
       expect(response).to have_http_status(200)

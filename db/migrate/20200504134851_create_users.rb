@@ -4,7 +4,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
 
     create_table :users do |t|
       t.string :login, :null => false, :index => { :unique => true }
-      t.index :name, :opclass => :gin_trgm_ops, :using => :gin
+      t.index :login, :opclass => :gin_trgm_ops, :using => :gin
 
       t.timestamps
     end
