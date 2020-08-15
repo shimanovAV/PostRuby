@@ -1,9 +1,17 @@
 FactoryBot.define do
+  sequence :title do |i|
+    "Title #{i}"
+  end
+  sequence :body do |i|
+    "Body #{i}"
+  end
+  sequence :author_ip do |i|
+    "ee1rr2tt#{i}"
+  end
   factory :post do
-    # use sequences to get unique strings
-    title { "MyString" }
-    body { "MyText" }
-    author_ip { "MyString" }
+    title
+    body
+    author_ip
     average_rate { 0.0 }
     user {create(:user)}
   end
@@ -14,8 +22,8 @@ FactoryBot.define do
     user {create(:user)}
   end
   factory :create_post, class: "Post" do
-    title { "MyString" }
-    body { "MyText" }
-    author_ip { "MyString" }
+    title
+    body
+    author_ip
   end
 end

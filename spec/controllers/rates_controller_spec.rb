@@ -4,7 +4,7 @@ require 'rails_helper'
 describe RatesController do
   describe 'POST #create' do
     before do
-        @post = create(:post)
+      @post = create(:post)
     end
     context 'with valid attributes' do
       let(:valid_post_request) {
@@ -17,6 +17,12 @@ describe RatesController do
         valid_post_request
         expect(response).to have_http_status(:created)
       end
+      it "handles exception correctly" do
+        allow_any_instance_of(RatesController).to receive(:create).and_raise(StandardError.new("Unexpected error"))
+        valid_post_request
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to eq "Unexpected error"
+      end
     end
     context 'with invalid attributes' do
       let(:invalid_post_request) {
@@ -28,6 +34,10 @@ describe RatesController do
       it "returns a unprocessable_entity" do
         invalid_post_request
         expect(response).to have_http_status(:unprocessable_entity)
+      end
+      it "returns right error message" do
+        invalid_post_request
+        expect(response.body).to eq "Rate hasn't been saved"
       end
     end
   end

@@ -6,7 +6,7 @@ class RatesController < ApplicationController
     if @rate.save
       render json: @rate.post.average_rate, status: :created
     else
-      render json: @rate.errors, status: :unprocessable_entity
+      raise StandardError.new "Rate hasn't been saved"
     end
   end
 

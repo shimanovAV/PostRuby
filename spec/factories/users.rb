@@ -1,6 +1,9 @@
 FactoryBot.define do
+  sequence :login do |i|
+    "User #{i}"
+  end
+
   factory :user do
-    # use sequence here to have unique "User_n" logins
-    login { "User "}
+    login
   end
 end
