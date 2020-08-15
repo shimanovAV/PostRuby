@@ -4,6 +4,7 @@ class RatesController < ApplicationController
   def create
     rate = rate_service.initialize_rate(rate_params)
     if rate.save
+      LoggerWorker.perform_async(rate.post.id, rate.rate)
       render json: rate.post.average_rate, status: :created
     else
       render json: "Error creating rate: #{rate.errors}", status: :unprocessable_entity

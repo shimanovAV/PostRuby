@@ -34,6 +34,7 @@ group :development, :test do
   gem 'redis-rails'
   gem 'redis-rack-cache'
   gem 'mock_redis'
+  gem 'sidekiq'
 end
 group :development do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
