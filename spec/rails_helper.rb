@@ -78,6 +78,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.strategy = :transaction
+    $redis.flushdb
   end
 
   config.before(:each) do

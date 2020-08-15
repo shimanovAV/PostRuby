@@ -29,6 +29,12 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'database_cleaner'
+  gem 'redis'
+  gem 'redis-namespace'
+  gem 'redis-rails'
+  gem 'redis-rack-cache'
+  gem 'mock_redis'
+  gem 'sidekiq'
 end
 group :development do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
