@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   respond_to :json
 
-  def search
+  def index
     respond_with(user_service.get_users_by_login(user_params))
   end
 

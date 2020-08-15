@@ -11,7 +11,7 @@ describe UsersController do
     context 'with optional parameters' do
       context 'with page parameter' do
         before {
-          get :search, params: {login: "User", page: 2, format: :json}
+          get :index, params: {login: "User", page: 2, format: :json}
         }
         it 'returns correct json' do
           response.body.should == @all_users[10, 10].to_json
@@ -22,7 +22,7 @@ describe UsersController do
       end
       context 'with per parameter' do
         before {
-          get :search, params: {login: "User", per: 6, format: :json}
+          get :index, params: {login: "User", per: 6, format: :json}
         }
         it 'returns correct json' do
           response.body.should == @all_users[0, 6].to_json
@@ -35,7 +35,7 @@ describe UsersController do
 
     context 'with default parameters' do
       before {
-        get :search, params: {login: "User 1", format: :json}
+        get :index, params: {login: "User 1", format: :json}
       }
       it 'returns correct json' do
         correct_response = @all_users.select { |user| user.login.include?("User 1") }
