@@ -18,6 +18,18 @@ class PostService
   end
 
   def get_all_ips
+    ips = $redis.get("ips-123")
+    if ips.nil?
+      ips = get_ips_from_db
+      $redis.set("ips-123", ips)
+      $redis.expire("ips-123", 5.minutes.to_i)
+    end
+    ips
+  end
+
+  private
+
+  def get_ips_from_db
     ips = Hash.new { |h, k| h[k] = [] }
     Post.distinct(:author_ip).each do |post|
       ip = post.author_ip.to_sym
